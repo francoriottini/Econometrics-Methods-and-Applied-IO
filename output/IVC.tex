@@ -1,0 +1,19 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{3}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}\\
+                    &\multicolumn{1}{c}{delta}&\multicolumn{1}{c}{delta}&\multicolumn{1}{c}{delta}\\
+\hline
+precio              &    -0.00842\sym{***}&     -0.0873\sym{***}&     -0.0909\sym{***}\\
+                    &     (-4.13)         &     (-6.81)         &     (-6.89)         \\
+[1em]
+descuento           &       0.147\sym{***}&       0.293\sym{***}&       0.293\sym{***}\\
+                    &     (11.42)         &     (32.52)         &     (32.23)         \\
+\hline
+Observations        &       38544         &       38544         &       38544         \\
+\hline\hline
+\multicolumn{4}{l}{\footnotesize \textit{t} statistics in parentheses}\\
+\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.05\), \sym{**} \(p<0.01\), \sym{***} \(p<0.001\)}\\
+\end{tabular}
+}
