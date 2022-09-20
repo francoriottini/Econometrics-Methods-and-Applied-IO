@@ -12,8 +12,13 @@ Este archivo sigue la siguiente estructura:
 0) Configurar el entorno
 
 1) Modelo Logit de elección discreta (Berry, 1994)*
+* 1.1) MCO
+* 1.2) MCO w/FE
+* 1.3) MCO w/FE and Interaction
+* 1.4) IV (con costo)*
+* 1.5) Hausman
 
-2) 
+2) BLP
 
 *******************************************************************************/
 
@@ -30,7 +35,7 @@ cd "$main"
 * 1) Modelo Logit de elección discreta
 * 1.1) MCO
 *==============================================================================*
-import excel "$input/DATA_UDESA (1).xlsx", sheet("DATA de Medicamentos") firstrow
+import excel "$input/DATA_UDESA_Final.xlsx", sheet("DATA de Medicamentos") firstrow
 
 *Generamos variables de interes 
 
@@ -81,15 +86,23 @@ esttab ols1 ols2 ols3 using "$output/OLS.tex", replace label keep(precio descuen
 
 ivregress 2sls delta descuento i.semana (precio = costo)
 
+est store ivc1
+
 * Las dos formas del punto 1.2)*
 
 xtset marca
 xtivreg delta descuento i.semana (precio = costo), fe
 
+est store ivc2
+
 ivregress 2sls delta descuento i.marca i.semana (precio = costo)
 
 * Tercer modelo
 ivregress 2sls delta descuento i.marca#i.tienda i.semana (precio = costo)
+
+est store ivc3
+
+esttab ivc1 ivc2 ivc3 using "$output/IVC.tex", replace label keep(precio descuento)
 
 * 1.5) Hausman
 *==============================================================================*
@@ -97,16 +110,23 @@ ivregress 2sls delta descuento i.marca#i.tienda i.semana (precio = costo)
 
 ivregress 2sls delta descuento i.semana (precio = Hausman)
 
+est store ivh1
+
 * Las dos formas del punto 1.2)*
 
 xtset marca
 xtivreg delta descuento i.semana (precio = Hausman), fe
+
+est store ivh2
 
 ivregress 2sls delta descuento i.marca i.semana (precio = Hausman)
 
 * Tercer modelo
 ivregress 2sls delta descuento i.marca#i.tienda i.semana (precio = Hausman)
 
+est store ivh3
+
+esttab ivh1 ivh2 ivh3 using "$output/IVH.tex", replace label keep(precio descuento)
 
 
 
