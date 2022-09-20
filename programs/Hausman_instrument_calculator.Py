@@ -2,7 +2,8 @@
 Created on Tue Sep 20 12:38:13 2022
 
 Este documento calcula el precio promedio de las otras marcas en las otras tiendas en la misma semana, 
-es decir, el llamado Instrumento de Hausman.
+es decir, el llamado Instrumento de Hausman. La fusión posterior de ambos archivos se 
+hizo mediante la función BUSCARV() de Excel.
 
 input: DATA_UDESA.xlsx
 output: hausman_instrument.xlsx
