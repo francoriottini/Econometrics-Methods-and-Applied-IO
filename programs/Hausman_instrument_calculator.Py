@@ -8,6 +8,9 @@ hizo mediante la función BUSCARV() de Excel.
 input: DATA_UDESA.xlsx
 output: hausman_instrument.xlsx
 
+Para replicar la fusión, copie y pegue "hausman_instrument.xlsx" en el output2:
+    sorted_values_DATA_UDESA
+explicitado en la segunda parte del código.
 """
 import os
 import pandas as pd 
@@ -55,4 +58,14 @@ for i in range(len(lista_df)):
         row += 1
     
 libro.close()
+
+#--------------------------------------------------------------------------------------------
+
+#Input
+df = pd.read_excel("input\DATA_UDESA.xlsx") 
+
+df = df.sort_values(['semana', 'marca', 'tienda'])
+
+#Output2
+df.to_excel('output\sorted_values_DATA_UDESA.xlsx')
 
