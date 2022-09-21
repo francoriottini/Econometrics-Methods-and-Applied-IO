@@ -1,5 +1,4 @@
 """
-Created on Tue Sep 20 12:38:13 2022
 
 Este documento calcula los share de venta de cada marca en cada semana, es decir,
 los s_{jt}. La fusión posterior de ambos archivos se hizo mediante la función
