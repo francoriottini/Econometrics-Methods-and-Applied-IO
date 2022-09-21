@@ -8,10 +8,13 @@ output: Shares.xlsx
 
 """
 
-import pandas as pd                           
-import openpyxl as pyxl                      
+import os
+import pandas as pd                                               
 from openpyxl import load_workbook
 
+
+#Seteamos directorio
+os.chdir('C:\\Users\\Franco\\Desktop\\UDESA\\Metodos econométricos e IO aplicada\\Examen Final')
 
 libro = load_workbook('input/DATA_UDESA.xlsx') #Importamos el Excel con los datos
                                                                     #(ORDENADOS PREVIAMENTE POR SEMANA, MARCA Y TIENDA)
