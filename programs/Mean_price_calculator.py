@@ -1,9 +1,11 @@
 """
 
-Calculador de precios promedios por marca y semana
+Calculador de precios promedios por marca y semana.
+
+Requiere como requisito previo que los datos esten ordenados por semana y marca.
 
 input: DATA_UDESA.xlsx
-output: Shares.xlsx
+output: DATA_UDESA.xlsx
 
 
 """

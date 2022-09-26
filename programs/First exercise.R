@@ -1,12 +1,22 @@
+################################################################################
+#EJERCICIO GMM DEL EXAMEN DE METODOS ECONOMETRICOS Y IO APLICADA 2022 - UDESA
+
+#Alumnos: Lucas Castellini y Franco Riottini
+
+################################################################################
+#PAQUETES NECESARIOS:
+#install.packages("stargazer")
 #install.packages("MASS")
 #install.packages("faux")
 #install.packages("ivreg", dependencies = TRUE)
-
+#install.packages("texreg")
 library(MASS)
 library(dplyr)
+library(texreg)
 library(tidyr)
 library(faux)
 library("ivreg")
+library("stargazer")
 
 #---------------------#Generamos la base de datos con las mil observaciones------
 
@@ -30,18 +40,22 @@ data <- rename(data, v = V2)
 
 data <- data %>% mutate (x = 1 + v)
 
-data <- data %>% mutate (y = x**2 + u)
+data <- data %>% mutate (xsq = x**2)
+
+data <- data %>% mutate (y = xsq + u)
+
+stargazer(data, type = "latex", title = "Data head")
 
 #-------------Control------
-cor.test(u, v)
+control <- cor.test(u, v)
 
 #----OLS
 
-OLS <- lm(y ~ x**2 -1, data = data)
+OLS <- lm(y ~ xsq -1, data = data)
 
-OLS2 <- lm(y ~ xsq -1, data = data)
+summary(OLS)
 
-summary(OLS2)
+stargazer(OLS, type = "latex", title = "OLS Regression")
 
 # Los resultados están sesgados ya que la variable dependiente (x) tiene un error (v)
 # en su DGP que se encuentra altamente correlacionado con el error no observable (u).
@@ -54,36 +68,60 @@ data <- data %>% mutate(z = 1)
 
 data <- data %>% mutate(xsq = x**2)
 
-FirstStage <- lm(x**2 ~ z -1, data = data)
+#Primera etapa de NL2SLS
+FirstStage <- lm(xsq ~ z -1, data = data)
 
-FirstStage2 <- lm(xsq ~ z -1, data = data)
+summary(FirstStage)
 
-data$xsqhat <- FirstStage$fitted.values
+data$x2hat <- FirstStage$fitted.values
 
-data$xsqhat2 <- FirstStage2$fitted.values
+#Dado que z = 1 los x2hat son todos iguales
 
-#Dado que z = 1 los xsqhat son todos iguales
+#Segunda etapa de NL2SLS
 
-nl2sls <- lm(y ~ xsqhat -1, data = data)
+nl2sls <- lm(y ~ x2hat -1, data = data)
 
-nl2sls2 <- lm(y ~ xsqhat2 -1, data = data)
+summary(nl2sls)
 
 # Este método es consistente
 
+stargazer(OLS, nl2sls, type = "latex", title = "OLS Regression")
+
+#También con x**2 se llega exactamente a los mismos resultados
+
+FirstStage2 <- lm(x**2 ~ z -1, data = data)
+
+summary(FirstStage2)
+
+data$x2hat2 <- FirstStage2$fitted.values
+
+nl2sls2 <- lm(y ~ x2hat2 -1, data = data)
+summary(nl2sls2)
+
+#NL2SLS si es consistente
 
 #------------------TwoStage(IV)
 
-IVfirst_stage <- lm(x ~ z -1, data = data)
+#Primera etapa de 2S
+IVFirstStage <- lm(x ~ z -1, data = data)
+summary(IVFirstStage)
+data$ivx <- IVFirstStage$fitted.values
 
-data$ivx <- IVfirst_stage$fitted.values
+#Generamos el instrumento ivx2
 
-data <- data %>% mutate(ivxsq = ivx**2)
+data <- data %>% mutate(ivx2 = ivx**2)
 
-IVsecond_stage <- lm(y ~ ivxsq -1, data = data)
+#Segunda etapa
+
+IVSecondStage <- lm(y ~ ivx2 -1, data = data)
+
+summary(IVSecondStage)
+
+#Usar ivx2 en la segunda etapa resulta en inconsistencia.
 
 # Este metodo es inconsistente
 #----------------------------
-
+stargazer(OLS, nl2sls, IVSecondStage, type = "latex", title = "OLS Regression")
 
 
 

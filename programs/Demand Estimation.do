@@ -46,7 +46,7 @@ gen delta = ln(share_jt) - ln(share_s0)
 
 *Regresamos MCO
 
-reg delta precio_jt descuento i.semana
+reg delta precio descuento i.semana
 
 *guardamos en la memoria
 est store ols1
@@ -64,22 +64,22 @@ Dado que la regresión con los share calculados a partir del monto de ventas tot
 *La primera
 
 xtset marca
-xtreg delta precio_jt descuento i.semana, fe
+xtreg delta precio descuento i.semana, fe
 
 est store ols2
 *La segunda, que permite identificar las variables categóricas
 
-regress delta precio_jt descuento i.marca i.semana
+regress delta precio descuento i.marca i.semana
 
 * 1.3) MCO
 *==============================================================================*
 
-regress delta precio_jt descuento i.marca#i.tienda i.semana
+regress delta precio descuento i.marca#i.tienda i.semana
 
 est store ols3
 
 *Exportamos
-esttab ols1 ols2 ols3 using "$output/OLS.tex", replace label keep(precio_jt descuento)
+esttab ols1 ols2 ols3 using "$output/OLS.tex", replace label keep(precio descuento)
 
 * 1.4) IV (con costo)*
 *==============================================================================*
@@ -136,11 +136,11 @@ esttab ivh1 ivh2 ivh3 using "$output/IVH.tex", replace label keep(precio descuen
 
 * Generamos variables con los coeficientes de las primeras tres regresiones para el precio promedio
 
-gen alpha1 = -.0494562
+gen alpha1 = -.0486758
 
-gen alpha2 = -.5666967
+gen alpha2 = -.3083324 
 
-gen alpha3 = -.5664513
+gen alpha3 = -.3443546
 
 * Generamos las elasticidades con la formula de Nevo (2000)
 
@@ -149,6 +149,12 @@ gen elasticity1 = alpha1*precio_jt*(1-share_jt)
 gen elasticity2 = alpha2*precio_jt*(1-share_jt)
 
 gen elasticity3 = alpha3*precio_jt*(1-share_jt)
+
+gen crosselasticity1 = -alpha1*precio_jt*share_jt
+
+gen crosselasticity2 = -alpha2*precio_jt*share_jt
+
+gen crosselasticity3 = -alpha3*precio_jt*share_jt
 
 * Data clean
 
