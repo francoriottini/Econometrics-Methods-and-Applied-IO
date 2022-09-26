@@ -1,6 +1,6 @@
 # Econometrics-Methods-and-Applied-IO
 
-Step by step solution of the final exam of Econometrics Methods and Applied IO from the Master in Economics at UdeSA in collab with Lucas Castellini.
+Step by step solution of the final exam of Econometrics Methods and Applied IO from the Master in Economics at UdeSA in collab with Lucas Castellini[https://github.com/LucasCastellini1].
 We apologize in advance for the spanglish.
 
 An easy way to understand everything we did is to read first the .pdf with the answers to the questions. This can provide the basic theoretical concepts to understand the procedure.
