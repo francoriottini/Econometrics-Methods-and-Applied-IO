@@ -17,12 +17,12 @@ instrumentos<-data.frame(matrix(NA, nrow = nrow(datos), ncol = 30))
 colnames(instrumentos)<-paste0("p",seq(30))
 
 #seed para replicabilidad
-set.seed(30)
+set.seed(1234)
 #loopeo
 for (i in 1:nrow(instrumentos)) {
-  datospivot<-datos%>%filter(marca==datos$marca[i] & semana==datos$semana[i] & tienda!=datos$tienda[i])
-  instrumentos[i,1:30]<-sample(datospivot$precio,size=30,replace=TRUE)
+  datos2<-datos%>%filter(marca==datos$marca[i] & semana==datos$semana[i] & tienda!=datos$tienda[i])
+  instrumentos[i,1:30]<-sample(datos2$precio,size=30,replace=TRUE)
 }
 
 #Incluyo todo en datos
-datos2 <- merge(datos, instrumentos)
+datos3 <- cbind(datos, instrumentos)
